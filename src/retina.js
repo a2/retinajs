@@ -22,16 +22,18 @@
   Retina.init = function(context) {
     if (context == null) context = root;
 
-    var existing_onload = context.onload || new Function;
-
-    context.onload = function() {
+    function onload() {
       var images = document.getElementsByTagName("img"), retinaImages = [], i, image;
       for (i = 0; i < images.length; i++) {
         image = images[i];
         retinaImages.push(new RetinaImage(image));
       }
-      existing_onload();
     }
+
+    if (context.attachEvent)
+      context.attachEvent('onload', onload);
+    else
+      context.addEventListener('load', onload, false);
   };
 
   Retina.isRetina = function(){
